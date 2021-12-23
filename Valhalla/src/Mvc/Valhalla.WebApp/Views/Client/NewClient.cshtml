@@ -1,0 +1,66 @@
+﻿@model ClientViewModel
+
+@{
+    ViewData["Title"] = "Client";
+}
+
+<form asp-action="NewClient" method="post">
+
+    <div class="form-group">
+        <label asp-for="FullName"></label>
+        <input asp-for="FullName" type="text" class="form-control">
+        <span class="text-danger" asp-validation-for="FullName"></span>
+    </div>
+
+    <div class="form-check">
+        <input asp-for="PersonType" class="form-check-input" type="radio" value="1" checked>
+        <label asp-for="PersonType" class="form-check-label" for="flexRadioDefault1">
+            Pessoa Juridica
+        </label>
+    </div>
+    <div class="form-check">
+        <input asp-for="PersonType" class="form-check-input" type="radio" value="2">
+        <label asp-for="PersonType" class="form-check-label" for="flexRadioDefault2">
+            Pessoa Fisica
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Document"></label>
+        <input asp-for="Document" type="text" class="form-control">
+        <span class="text-danger" asp-validation-for="Document"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" type="date" class="form-control">
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="TelComercial"></label>
+        <input asp-for="TelComercial" type="text" class="form-control">
+        <span class="text-danger" asp-validation-for="TelComercial"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Celular"></label>
+        <input asp-for="Celular" type="text" class="form-control">
+        <span class="text-danger" asp-validation-for="Celular"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Home"></label>
+        <input asp-for="Home" type="text" class="form-control">
+    </div>
+
+
+    <button class="btn btn-primary" type="submit">Salvar</button>
+
+</form>
+
+@section Scripts {
+        @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+}

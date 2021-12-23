@@ -14,6 +14,8 @@ namespace Valhalla.Dominio.Models
         private List<Phone> _phones = new List<Phone>();
         public IReadOnlyCollection<Phone> Phones => _phones;
 
+        protected Client() { }
+
         public Client(string fullName, string document, PersonType personType, string ddd, string number, PhoneType phoneType)
         {
             //Validation.ValidateIsNullOrEmpty(fullName, "O nome completo é obrigatorio");

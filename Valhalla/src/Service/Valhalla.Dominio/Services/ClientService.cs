@@ -1,6 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Valhalla.Dominio.Interfaces;
 using Valhalla.Dominio.Models;
@@ -13,31 +11,43 @@ namespace Valhalla.Dominio.Services
         private readonly INotifierService _notifierService;
         private readonly IClienRepository _clienRepository;
 
-        public ClientService(INotifierService notifierService)
+        public ClientService(INotifierService notifierService, IClienRepository clienRepository)
         {
             _notifierService = notifierService;
+            _clienRepository = clienRepository;
         }
 
         public async Task AddClient(Client client)
-        {            
-            if (RunValidation(new ClientValidation(), client)) return;
+        {
+            RunValidation(new ClientValidation(), client);
+            foreach (var item in client.Phones)
+                RunValidation(new PhoneValidation(), item);
 
-            //Validar se ja existe o ducumento salvo no banco
+            if (_notifierService.HasError()) return;
 
-            //Salva na memoria
+
+            var result = await _clienRepository.FindByClient(x => x.Document == client.Document);
+            if(result != null)
+            {
+                _notifierService.AddError("Documento ja cadastrado para outro cliente.");
+                return;
+            }
+            
             await _clienRepository.Insert(client);
-
             foreach (var item in client.Phones)
             {
                 await _clienRepository.InsertPhone(item);
-            }           
-           
+            }            
 
-            //Salva no banco
-
-            if(await _clienRepository.SaveChanges() < 1)
+            if (await _clienRepository.SaveChanges() < 1)
             {
-                //Error
+                _notifierService.AddError("Houve um erro ao persistir dados");
+
+                //Primeira opção de erro - Exception
+
+                //Segunda DominException
+
+                return;
             }
             await Task.CompletedTask;
         }

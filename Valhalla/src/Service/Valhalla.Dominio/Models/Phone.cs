@@ -13,6 +13,7 @@ namespace Valhalla.Dominio.Models
 
         public Client Client { get; private set; }
 
+        protected Phone() { }
         public Phone(Client client, string ddd, string number, PhoneType phoneType)
         {
             ClientId = client.Id;

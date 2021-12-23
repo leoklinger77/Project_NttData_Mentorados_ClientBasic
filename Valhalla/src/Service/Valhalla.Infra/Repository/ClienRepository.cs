@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Valhalla.Dominio.Interfaces;
 using Valhalla.Dominio.Models;
@@ -15,9 +18,14 @@ namespace Valhalla.Infra.Repository
             _context = context;
         }
 
+        public async Task<Client> FindByClient(Expression<Func<Client, bool>> predicate)
+        {
+            return await _context.Clients.Where(predicate).AsNoTracking().FirstOrDefaultAsync();
+        }
+
         public async Task Insert(Client client)
         {
-            await _context.Clients.AddAsync(client);
+            await _context.Clients.AddAsync(client);            
         }
 
         public async Task InsertPhone(Phone phone)
