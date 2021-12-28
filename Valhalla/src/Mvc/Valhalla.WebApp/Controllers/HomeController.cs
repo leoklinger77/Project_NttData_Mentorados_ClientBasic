@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using Valhalla.Dominio.Interfaces;
 using Valhalla.WebApp.Extension;
 using Valhalla.WebApp.Models;
 
@@ -11,7 +12,8 @@ namespace Valhalla.WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(INotifierService notifierService, ILogger<HomeController> logger) 
+                            : base(notifierService)
         {
             _logger = logger;
         }

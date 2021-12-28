@@ -10,7 +10,7 @@ namespace Valhalla.Dominio.Models.Validation
                    .NotEmpty()
                    .WithMessage("O ddd é obrigatorio")
                    .Length(2, 2)
-                   .WithMessage("o ddd deve conter 2 caracteres");
+                   .WithMessage("O ddd deve conter 2 caracteres");
 
             When(x=>x.PhoneType == Enum.PhoneType.Smarthphone, () => 
             {
@@ -18,7 +18,7 @@ namespace Valhalla.Dominio.Models.Validation
                    .NotEmpty()
                    .WithMessage("O celular é obrigatorio")
                    .Length(9, 9)
-                   .WithMessage("o celular deve conter 9 caracteres");
+                   .WithMessage("O celular deve conter 9 caracteres");
             });
 
             When(x => x.PhoneType == Enum.PhoneType.Home, () =>
@@ -27,7 +27,7 @@ namespace Valhalla.Dominio.Models.Validation
                    .NotEmpty()
                    .WithMessage("O telefone fixo é obrigatorio")
                    .Length(8, 8)
-                   .WithMessage("o telefone fixo deve conter 8 caracteres");
+                   .WithMessage("O telefone fixo deve conter 8 caracteres");
             });
 
             When(x => x.PhoneType == Enum.PhoneType.Commercial, () =>
@@ -36,7 +36,7 @@ namespace Valhalla.Dominio.Models.Validation
                    .NotEmpty()
                    .WithMessage("O telefone comercial é obrigatorio")
                    .Length(8, 9)
-                   .WithMessage("o telefone comercial deve conter entre 8 e 9 caracteres");
+                   .WithMessage("O telefone comercial deve conter entre 8 e 9 caracteres");
             });
 
 

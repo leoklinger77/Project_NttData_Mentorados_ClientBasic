@@ -10,6 +10,7 @@ using Valhalla.Dominio.Services;
 using Valhalla.Infra.Data;
 using Valhalla.Infra.Repository;
 using Valhalla.WebApp.Data;
+using Valhalla.WebApp.Extension.Extensions;
 
 namespace Valhalla.WebApp
 {
@@ -74,6 +75,8 @@ namespace Valhalla.WebApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

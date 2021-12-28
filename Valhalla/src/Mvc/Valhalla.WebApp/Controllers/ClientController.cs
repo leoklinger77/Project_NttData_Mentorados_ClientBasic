@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Valhalla.Dominio.Interfaces;
 using Valhalla.Dominio.Models;
@@ -16,25 +17,37 @@ namespace Valhalla.WebApp.Controllers
         private readonly IClientService _clientService;
         private readonly IMapper _mapper;
 
-        public ClientController(IClientService clientService, IMapper mapper)
+        public ClientController(INotifierService notifierService, IClientService clientService, IMapper mapper) 
+                                : base(notifierService)
         {
             _clientService = clientService;
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IActionResult Index()
+        [HttpGet, Route("todos-os-cliente")]        
+        public async Task<IActionResult> Index(int PageSize = 1, int PageIndex = 1, string query = null)
         {
-            return View();
+            var result = await _clientService.Pagination(PageSize, PageIndex, query);
+
+            return View(new PaginationViewModel<ClientViewModel>()
+            {
+                List = _mapper.Map<IEnumerable<ClientViewModel>>(result.List),
+                PageIndex = result.PageIndex,
+                PageSize = result.PageSize,
+                Query = result.Query,
+                TotalResult = result.TotalResult,
+                ReferenceAction = "Index"
+            });
         }
 
-        [HttpGet]
+        [HttpGet, Route("todos-os-cliente/novo-cliente")]        
         public IActionResult NewClient()
         {
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, Route("todos-os-cliente/novo-cliente")]        
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> NewClient(ClientViewModel viewModel)
         {
             if(!ModelState.IsValid) return View(viewModel);
@@ -58,7 +71,7 @@ namespace Valhalla.WebApp.Controllers
 
             await _clientService.AddClient(client);
 
-            //Validar se foi valido a operação
+            if(OperationValid()) return View(viewModel);
 
             return RedirectToAction(nameof(Index));
         }

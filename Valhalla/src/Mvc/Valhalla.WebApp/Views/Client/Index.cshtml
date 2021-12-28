@@ -1,5 +1,29 @@
-﻿@{
+﻿@model PaginationViewModel<ClientViewModel>
+
+@{
     ViewData["Title"] = "Client";
 }
 
 <a asp-action="NewClient" asp-controller="Client" class="btn btn-primary">Novo Cliente</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>            
+            <th scope="col">Nome</th>
+            <th scope="col">Documento</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <th scope="row">@item.FullName</th>
+                <td>@item.Document</td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<vc:pagination model-pagination="@Model"></vc:pagination>

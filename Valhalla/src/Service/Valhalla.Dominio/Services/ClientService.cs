@@ -17,6 +17,11 @@ namespace Valhalla.Dominio.Services
             _clienRepository = clienRepository;
         }
 
+        public async Task<PaginationViewModel<Client>> Pagination(int PageSize, int PageIndex, string query)
+        {
+            return await _clienRepository.Pagination(PageSize, PageIndex, query);
+        }
+
         public async Task AddClient(Client client)
         {
             RunValidation(new ClientValidation(), client);
@@ -27,6 +32,9 @@ namespace Valhalla.Dominio.Services
 
 
             var result = await _clienRepository.FindByClient(x => x.Document == client.Document);
+
+            //Validation.ValidateIfTrue(result != null, "Documento ja cadastrado para outro cliente.");            
+            
             if(result != null)
             {
                 _notifierService.AddError("Documento ja cadastrado para outro cliente.");
@@ -52,6 +60,7 @@ namespace Valhalla.Dominio.Services
             await Task.CompletedTask;
         }
 
+        
 
         private bool RunValidation<Tv, Te>(Tv validacao, Te entidade) where Tv : AbstractValidator<Te> where Te : Entity
         {

@@ -1,0 +1,9 @@
+﻿@if (ViewData.ModelState.ErrorCount > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        @foreach(var item in ViewData.Model)
+        {            
+            @Html.Raw(item) <br />
+        }
+    </div>
+}
